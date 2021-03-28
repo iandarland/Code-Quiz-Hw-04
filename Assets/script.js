@@ -13,20 +13,15 @@ var ans4El = document.getElementById('answer4');
 
 
 //Timer and ScoreHUD
-var timerEl = document.getElementById('timer')
-var scoreEl = document.getElementById('current-score')
+var timerEl = document.getElementById('timer');
+var scoreEl = document.getElementById('current-score');
 
 //Objects
-var q1
-var q2 
-var q3
-var q4
-var q5
-var q6
-var possible = []
-var qIndex = 0
-var selectedAnswer = ""
-var score = 0
+var possible = [];
+var qIndex = 0;
+var selectedAnswer = "";
+var score = 0;
+var timeLeft = 60;
 
 var q1 = {
     question : "This is the question 1",
@@ -67,11 +62,14 @@ var q7 = {
     question : "This is the question 7",
     correct : "this is the correct answer 7",
     incorrect : ["possible ans1", "possible ans2", "possible ans3",]
-}
+};
 
-var allQuestions = [q1,q2,q3,q4,q5,q6]
+var allQuestions = [q1, q2, q3, q4, q5, q6, q7];
 //adding correct answers to incorrect answers and shuffling possible answers 
-possible = allQuestions[qIndex].incorrect.concat(allQuestions[qIndex].correct);
+
+function createArray(){
+    possible = allQuestions[qIndex].incorrect.concat(allQuestions[qIndex].correct);
+};
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
@@ -79,36 +77,35 @@ function shuffleArray(array) {
         array[i] = array[j];
         array[j] = temp;
     }
-}
+};
 
 //creating function to assign shuffled answers to buttons
 function displayAnswers(){
-    shuffleArray(possible)
+    createArray();
+    shuffleArray(possible);
     quizQEl.textContent= allQuestions[qIndex].question
     ans1El.textContent= possible[0];
     ans2El.textContent= possible[1];
     ans3El.textContent= possible[2];
     ans4El.textContent= possible[3];
-}
-
-//attempting to assign the value selected to selectedAnswer to compare to correct answer
-// function setAnswer(thisAnswer){
-//     selectedAnswer === thisAnswer;
-//     console.log(selectedAnswer)
-// }
-
+};
 //Page Navagation
 function init(){
     homeEL.setAttribute("style", "display: block")
 }
-function quizScore(){
+function quizScore(selectedAnswer){
     if(selectedAnswer === allQuestions[qIndex].correct){
         score++
     }else{
         timeLeft -= 5
     }
-}
-init()
+};
+
+function setQIndex(){
+    if (qIndex > (allQuestions.lenght-1)){
+        qIndex === 0}
+};
+init();
 
 startBTN.addEventListener('click', function() {
     homeEL.setAttribute("style", "display: none");
@@ -116,42 +113,19 @@ startBTN.addEventListener('click', function() {
     gameClock();
 })
 playBTN.addEventListener('click', function() {
-    highEl.setAttribute("style", "display:none");
-    homeEL.setAttribute("style", "display:block");
-})
+    location.reload()
+    // highEl.setAttribute("style", "display:none");
+    // homeEL.setAttribute("style", "display:block");
+});
 
 
-//Answer Buttons
-ans1El.addEventListener('click', function(){
-    var selectedAnswer = ans1El.textContent;
-    qIndex++;
-    displayAnswers();
-    console.log(selectedAnswer)
-});
-ans2El.addEventListener('click', function(){
-    selectedAnswer = ans2El.textContent
-    qIndex++;
-    displayAnswers();
-    console.log(selectedAnswer)
-});
-ans3El.addEventListener('click', function(){
-    selectedAnswer = ans3El.textContent
-    qIndex++;
-    displayAnswers();
-    console.log(selectedAnswer)
-});
-ans4El.addEventListener('click', function(){
-    selectedAnswer = ans4El.textContent
-    qIndex++;
-    displayAnswers();
-    console.log(selectedAnswer)
-});
+
 
 //CLOCK FUNCTION
 function gameClock(){
     quizQEl.textContent = allQuestions[qIndex].question;
     displayAnswers();
-    var timeLeft = 60
+    timeLeft = 60
     var timeInterval = setInterval(function(){
         if(timeLeft > 0){
             scoreEl.textContent = "Score: " + score
@@ -162,14 +136,45 @@ function gameClock(){
             clearInterval(timeInterval);
             quizEl.setAttribute('style', 'display:none');
             highEl.setAttribute('style', 'display:block');
-        };
-        if (selectedAnswer === allQuestions[qIndex].correct){
-            score++
-            qIndex++
-        }else{
-            timeLeft -= 5
-            qIndex++
+            prompt("Enter Your Name to Record High Score", "Jerry Seinfeld")
         };
     }, 1000);
-    
-}
+};
+
+//Answer Buttons
+ans1El.addEventListener('click', function(){
+    selectedAnswer = ans1El.textContent;
+    console.log(selectedAnswer);
+    quizScore(selectedAnswer);
+    qIndex++;
+    if (qIndex >= (allQuestions.lenght-1)){
+        qIndex = 0};
+    displayAnswers();   
+});
+ans2El.addEventListener('click', function(){
+    selectedAnswer = ans2El.textContent;
+    console.log(selectedAnswer);
+    quizScore(selectedAnswer);
+    qIndex++;
+    if (qIndex >= (allQuestions.lenght-1)){
+        qIndex = 0};
+    displayAnswers();   
+});
+ans3El.addEventListener('click', function(){
+    selectedAnswer = ans3El.textContent;
+    console.log(selectedAnswer);
+    quizScore(selectedAnswer);
+    qIndex++;
+    if (qIndex >= (allQuestions.lenght-1)){
+        qIndex = 0};
+    displayAnswers();   
+});
+ans4El.addEventListener('click', function(){
+    selectedAnswer = ans4El.textContent;
+    console.log(selectedAnswer);
+    quizScore(selectedAnswer);
+    qIndex++;
+    if (qIndex >= (allQuestions.lenght-1)){
+        qIndex = 0};
+    displayAnswers();   
+});
