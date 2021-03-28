@@ -24,50 +24,54 @@ var q4
 var q5
 var q6
 var possible = []
-var i = 0
+var qIndex = 0
 var selectedAnswer = ""
+var score = 0
 
-q1 = {
-    question : "This is the question",
-    correct : "this is the correct answer",
+var q1 = {
+    question : "This is the question 1",
+    correct : "this is the correct answer 1",
     incorrect : ["possible ans1", "possible ans2", "possible ans3",]
-}
-q2 = {
-    question : "This is the question",
-    correct : "this is the correct answer",
-    incorrect : ["possible ans1", "possible ans2", "possible ans3",]
-
-}
-q3 = {
-    question : "This is the question",
-    correct : "this is the correct answer",
+};
+var q2 = {
+    question : "This is the question 2",
+    correct : "this is the correct answer 2",
     incorrect : ["possible ans1", "possible ans2", "possible ans3",]
 
-}
-q4 = {
-    question : "This is the question",
-    correct : "this is the correct answer",
+};
+var q3 = {
+    question : "This is the question 3",
+    correct : "this is the correct answer 3",
     incorrect : ["possible ans1", "possible ans2", "possible ans3",]
 
-}
-q5 = {
-    question : "This is the question",
-    correct : "this is the correct answer",
+};
+var q4 = {
+    question : "This is the question 4",
+    correct : "this is the correct answer 4",
     incorrect : ["possible ans1", "possible ans2", "possible ans3",]
 
-}
-q6 = {
-    question : "This is the question",
-    correct : "this is the correct answer",
+};
+var q5 = {
+    question : "This is the question 5",
+    correct : "this is the correct answer 5",
     incorrect : ["possible ans1", "possible ans2", "possible ans3",]
 
+};
+var q6 = {
+    question : "This is the question 6",
+    correct : "this is the correct answer 6",
+    incorrect : ["possible ans1", "possible ans2", "possible ans3",]
+
+};
+var q7 = {
+    question : "This is the question 7",
+    correct : "this is the correct answer 7",
+    incorrect : ["possible ans1", "possible ans2", "possible ans3",]
 }
 
 var allQuestions = [q1,q2,q3,q4,q5,q6]
-
-
-possible = allQuestions[i].incorrect.concat(allQuestions[i].correct)
-
+//adding correct answers to incorrect answers and shuffling possible answers 
+possible = allQuestions[qIndex].incorrect.concat(allQuestions[qIndex].correct);
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
@@ -77,24 +81,33 @@ function shuffleArray(array) {
     }
 }
 
+//creating function to assign shuffled answers to buttons
 function displayAnswers(){
     shuffleArray(possible)
+    quizQEl.textContent= allQuestions[qIndex].question
     ans1El.textContent= possible[0];
     ans2El.textContent= possible[1];
     ans3El.textContent= possible[2];
     ans4El.textContent= possible[3];
 }
 
-function setAnswer(thisAnswer){
-    thisAnswer.preventDefault
-    selectedAnswer === thisAnswer
-}
+//attempting to assign the value selected to selectedAnswer to compare to correct answer
+// function setAnswer(thisAnswer){
+//     selectedAnswer === thisAnswer;
+//     console.log(selectedAnswer)
+// }
 
 //Page Navagation
 function init(){
     homeEL.setAttribute("style", "display: block")
 }
-
+function quizScore(){
+    if(selectedAnswer === allQuestions[qIndex].correct){
+        score++
+    }else{
+        timeLeft -= 5
+    }
+}
 init()
 
 startBTN.addEventListener('click', function() {
@@ -109,30 +122,39 @@ playBTN.addEventListener('click', function() {
 
 
 //Answer Buttons
-ans1El.addEventListener('click', setAnswer(possible[0]));
-ans2El.addEventListener('click', setAnswer(possible[1]));
-ans3El.addEventListener('click', setAnswer(possible[2]));
-ans4El.addEventListener('click', setAnswer(possible[3]));
-console.log(selectedAnswer)
-// ans1El.addEventListener('click', function(){selectedAnswer = possible[0]});
-// ans2El.addEventListener('click', function(){selectedAnswer = possible[1]});
-// ans3El.addEventListener('click', function(){selectedAnswer = possible[2]});
-// ans4El.addEventListener('click', function(){selectedAnswer = possible[3]});
+ans1El.addEventListener('click', function(){
+    var selectedAnswer = ans1El.textContent;
+    qIndex++;
+    displayAnswers();
+    console.log(selectedAnswer)
+});
+ans2El.addEventListener('click', function(){
+    selectedAnswer = ans2El.textContent
+    qIndex++;
+    displayAnswers();
+    console.log(selectedAnswer)
+});
+ans3El.addEventListener('click', function(){
+    selectedAnswer = ans3El.textContent
+    qIndex++;
+    displayAnswers();
+    console.log(selectedAnswer)
+});
+ans4El.addEventListener('click', function(){
+    selectedAnswer = ans4El.textContent
+    qIndex++;
+    displayAnswers();
+    console.log(selectedAnswer)
+});
 
 //CLOCK FUNCTION
 function gameClock(){
-    quizQEl.textContent = q1.question;
-    displayAnswers()
-    if (selectedAnswer === allQuestions[i].correct){
-        score++
-        i++
-    }else{
-        timeLeft -= 5
-        i++
-    }
-    var timeLeft = 20
+    quizQEl.textContent = allQuestions[qIndex].question;
+    displayAnswers();
+    var timeLeft = 60
     var timeInterval = setInterval(function(){
         if(timeLeft > 0){
+            scoreEl.textContent = "Score: " + score
             timerEl.textContent = "You have " + timeLeft + " seconds left";
             timeLeft--;
         }else{   
@@ -140,7 +162,14 @@ function gameClock(){
             clearInterval(timeInterval);
             quizEl.setAttribute('style', 'display:none');
             highEl.setAttribute('style', 'display:block');
-
-        }
-    }, 1000)
+        };
+        if (selectedAnswer === allQuestions[qIndex].correct){
+            score++
+            qIndex++
+        }else{
+            timeLeft -= 5
+            qIndex++
+        };
+    }, 1000);
+    
 }
