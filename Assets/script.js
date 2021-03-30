@@ -10,7 +10,8 @@ var ans1El = document.getElementById('answer1');
 var ans2El = document.getElementById('answer2');
 var ans3El = document.getElementById('answer3');
 var ans4El = document.getElementById('answer4');
-
+var highScore = document.getElementById('high-scores');
+// var newScore = highScore.createElement(li)
 
 //Timer and ScoreHUD
 var timerEl = document.getElementById('timer');
@@ -22,6 +23,7 @@ var qIndex = 0;
 var selectedAnswer = "";
 var score = 0;
 var timeLeft = 60;
+var highScores = JSON.parse(localStorage.getItem("high-scores")) || []
 
 var q1 = {
     question : "This is the question 1",
@@ -68,7 +70,11 @@ var allQuestions = [q1, q2, q3, q4, q5, q6, q7];
 //adding correct answers to incorrect answers and shuffling possible answers 
 
 function createArray(){
+    if (qIndex < 7){
     possible = allQuestions[qIndex].incorrect.concat(allQuestions[qIndex].correct);
+    }else{
+        timeLeft -= timeLeft
+    }
 };
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -101,8 +107,8 @@ function quizScore(selectedAnswer){
     }
 };
 
-function setQIndex(){
-    if (qIndex > (allQuestions.lenght-1)){
+function setQIndex(qIndex){
+    if (qIndex > (allQuestions.length-1)){
         qIndex === 0}
 };
 init();
@@ -118,14 +124,32 @@ playBTN.addEventListener('click', function() {
     // homeEL.setAttribute("style", "display:block");
 });
 
-
-
+//pulling stored info from local storage to create high scores page
+function saveScore(){
+    var userName = prompt("enter your name here", "Your Name Here")
+    var userScore = score;
+    var finalScore = {userName, userScore};
+    highScores.push(finalScore);
+    localStorage.setItem("high-scores", JSON.stringify(highScores));
+    popScores();
+};
+function popScores(){
+    highScores.sort(function (a,b){
+        return b.userScore - a.userScore;
+    })
+    highScore.innerHTML = "";
+    highScores.forEach(function(person){
+        var listEl = document.createElement("li")
+        listEl.textContent = "user: " + person.userName + "- Score " + person.userScore;
+        highScore.appendChild(listEl);
+    })
+}
 
 //CLOCK FUNCTION
 function gameClock(){
     quizQEl.textContent = allQuestions[qIndex].question;
     displayAnswers();
-    timeLeft = 60
+    timeLeft = 30
     var timeInterval = setInterval(function(){
         if(timeLeft > 0){
             scoreEl.textContent = "Score: " + score
@@ -136,7 +160,7 @@ function gameClock(){
             clearInterval(timeInterval);
             quizEl.setAttribute('style', 'display:none');
             highEl.setAttribute('style', 'display:block');
-            prompt("Enter Your Name to Record High Score", "Jerry Seinfeld")
+            saveScore();
         };
     }, 1000);
 };
@@ -144,37 +168,29 @@ function gameClock(){
 //Answer Buttons
 ans1El.addEventListener('click', function(){
     selectedAnswer = ans1El.textContent;
-    console.log(selectedAnswer);
     quizScore(selectedAnswer);
     qIndex++;
-    if (qIndex >= (allQuestions.lenght-1)){
-        qIndex = 0};
+    setQIndex(qIndex);
     displayAnswers();   
 });
 ans2El.addEventListener('click', function(){
     selectedAnswer = ans2El.textContent;
-    console.log(selectedAnswer);
     quizScore(selectedAnswer);
     qIndex++;
-    if (qIndex >= (allQuestions.lenght-1)){
-        qIndex = 0};
+    setQIndex(qIndex);
     displayAnswers();   
 });
 ans3El.addEventListener('click', function(){
     selectedAnswer = ans3El.textContent;
-    console.log(selectedAnswer);
     quizScore(selectedAnswer);
     qIndex++;
-    if (qIndex >= (allQuestions.lenght-1)){
-        qIndex = 0};
+    setQIndex(qIndex);
     displayAnswers();   
 });
 ans4El.addEventListener('click', function(){
     selectedAnswer = ans4El.textContent;
-    console.log(selectedAnswer);
     quizScore(selectedAnswer);
     qIndex++;
-    if (qIndex >= (allQuestions.lenght-1)){
-        qIndex = 0};
+    setQIndex(qIndex);
     displayAnswers();   
 });
