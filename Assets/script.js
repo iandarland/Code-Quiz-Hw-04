@@ -10,8 +10,12 @@ var ans1El = document.getElementById('answer1');
 var ans2El = document.getElementById('answer2');
 var ans3El = document.getElementById('answer3');
 var ans4El = document.getElementById('answer4');
+
+//High Scores Page Selectors
 var highScore = document.getElementById('high-scores');
-// var newScore = highScore.createElement(li)
+var nameSubmit = document.getElementById('submit-name');
+var typeName= document.getElementById('nameInput');
+var nameHead= document.getElementById('nameInput1')
 
 //Timer and ScoreHUD
 var timerEl = document.getElementById('timer');
@@ -23,54 +27,106 @@ var qIndex = 0;
 var selectedAnswer = "";
 var score = 0;
 var timeLeft = 60;
-var highScores = JSON.parse(localStorage.getItem("high-scores")) || []
+var highScores = JSON.parse(localStorage.getItem("high-scores")) || [];
 
 var q1 = {
-    question : "This is the question 1",
-    correct : "this is the correct answer 1",
-    incorrect : ["possible ans1", "possible ans2", "possible ans3",]
+    question : 'I declare this the summer of _____!!!!',
+    correct : "GEORGE",
+    incorrect : ["WHITE BOY", "HOT GIRL", "KRAMER",],
 };
 var q2 = {
-    question : "This is the question 2",
-    correct : "this is the correct answer 2",
-    incorrect : ["possible ans1", "possible ans2", "possible ans3",]
+    question : "...hello... ______...",
+    correct : "Newman",
+    incorrect : ["Watley", "Elaine", "Putty",],
 
 };
 var q3 = {
-    question : "This is the question 3",
-    correct : "this is the correct answer 3",
-    incorrect : ["possible ans1", "possible ans2", "possible ans3",]
+    question : "No _____ for you!!!",
+    correct : "SOUP",
+    incorrect : ["PEZ", "SPONGE", "COFFEE",],
 
 };
 var q4 = {
-    question : "This is the question 4",
-    correct : "this is the correct answer 4",
-    incorrect : ["possible ans1", "possible ans2", "possible ans3",]
+    question : "I am master of my _____.",
+    correct : "domain",
+    incorrect : ["house", "work", "game",],
 
 };
 var q5 = {
-    question : "This is the question 5",
-    correct : "this is the correct answer 5",
-    incorrect : ["possible ans1", "possible ans2", "possible ans3",]
+    question : "I dont wanna be a ______!",
+    correct : "Pirate",
+    incorrect : ["close talker", "joker", "smoker",],
 
 };
 var q6 = {
-    question : "This is the question 6",
-    correct : "this is the correct answer 6",
-    incorrect : ["possible ans1", "possible ans2", "possible ans3",]
+    question : "_____ is the most sensual of the cured meats",
+    correct : "Pastrami",
+    incorrect : ["Mortadella", "Peparoni", "Corned beef",],
 
 };
 var q7 = {
-    question : "This is the question 7",
-    correct : "this is the correct answer 7",
-    incorrect : ["possible ans1", "possible ans2", "possible ans3",]
+    question : "You know I've always wanted to pretend I was a(n) ______",
+    correct : "architect",
+    incorrect : ["police officer", "importer/exporter", "baseball player",],
+};
+var q8 = {
+    question : "If you look ______ all the time, people think that you're busy.",
+    correct : "annoyed",
+    incorrect : ["happy", "busy", "frantic",],
+
+};
+var q9 = {
+    question : "You're killing ______ George!",
+    correct : "independant",
+    incorrect : ["successful", "big", "happy",],
+
+};
+var q10 = {
+    question : "I just couldn't decide if he was _____ worthy.",
+    correct : "sponge",
+    incorrect : ["Elaine", "home", "date",],
+
+};
+var q11 = {
+    question : "Three _____? You can't spare three ______? ",
+    correct : "squares",
+    incorrect : ["seconds", "pieces", "jujifruits",],
+};
+var q12 = {
+    question : "These ______ are making me thirsty!",
+    correct : "pretzels",
+    incorrect : ["chips", "Mackinaw peaches", "bagels",],
+
+};
+var q13 = {
+    question : "_____ NOW!!!",
+    correct : "SERENITY",
+    incorrect : ["APOCALYPSE", "GO", "HEY",],
+
+};
+var qAA = {
+    question : "That is one magic ______.",
+    correct : "loogie",
+    incorrect : ["marker", "jumping bean", "moment",],
+
+};
+var qBB = {
+    question : "It's a _____ for the rest of us",
+    correct : "festivus",
+    incorrect : ["dinner", "home", "place",],
+
+};
+var qCC = {
+    question : "When the phone rings, you have to answer '______.' ",
+    correct : "Vadelay Industries",
+    incorrect : ["Kenny Rogers Roasters", "Jerry's House", "Baskin Robbins",],
 };
 
-var allQuestions = [q1, q2, q3, q4, q5, q6, q7];
+var allQuestions = [q1, q2, q3, q4, q5, q6, q7, q8, q9 ,q10, q11, q12, q13, qAA, qBB, qCC];
 //adding correct answers to incorrect answers and shuffling possible answers 
 
 function createArray(){
-    if (qIndex < 7){
+    if (qIndex < allQuestions.length){
     possible = allQuestions[qIndex].incorrect.concat(allQuestions[qIndex].correct);
     }else{
         timeLeft -= timeLeft
@@ -85,7 +141,8 @@ function shuffleArray(array) {
     }
 };
 
-//creating function to assign shuffled answers to buttons
+
+//Shuffling Array and Cycling Through Array
 function displayAnswers(){
     createArray();
     shuffleArray(possible);
@@ -95,29 +152,31 @@ function displayAnswers(){
     ans3El.textContent= possible[2];
     ans4El.textContent= possible[3];
 };
-//Page Navagation
-function init(){
-    homeEL.setAttribute("style", "display: block")
-}
+function setQIndex(qIndex){
+    if (qIndex > (allQuestions.length-1)){
+        qIndex === 0}
+};
+
+//Scoring Function
 function quizScore(selectedAnswer){
     if(selectedAnswer === allQuestions[qIndex].correct){
-        score++
+        score += 5
     }else{
         timeLeft -= 5
     }
 };
 
-function setQIndex(qIndex){
-    if (qIndex > (allQuestions.length-1)){
-        qIndex === 0}
-};
-init();
 
+//Page Navagation
+function init(){
+    homeEL.setAttribute("style", "display: block")
+}
+init();
 startBTN.addEventListener('click', function() {
     homeEL.setAttribute("style", "display: none");
     quizEl.setAttribute("style", "display: block");
     gameClock();
-})
+});
 playBTN.addEventListener('click', function() {
     location.reload()
     // highEl.setAttribute("style", "display:none");
@@ -126,12 +185,12 @@ playBTN.addEventListener('click', function() {
 
 //pulling stored info from local storage to create high scores page
 function saveScore(){
-    var userName = prompt("enter your name here", "Your Name Here")
+    var userName = typeName.value
     var userScore = score;
     var finalScore = {userName, userScore};
     highScores.push(finalScore);
     localStorage.setItem("high-scores", JSON.stringify(highScores));
-    popScores();
+    
 };
 function popScores(){
     highScores.sort(function (a,b){
@@ -149,7 +208,7 @@ function popScores(){
 function gameClock(){
     quizQEl.textContent = allQuestions[qIndex].question;
     displayAnswers();
-    timeLeft = 30
+    timeLeft = 60
     var timeInterval = setInterval(function(){
         if(timeLeft > 0){
             scoreEl.textContent = "Score: " + score
@@ -160,7 +219,6 @@ function gameClock(){
             clearInterval(timeInterval);
             quizEl.setAttribute('style', 'display:none');
             highEl.setAttribute('style', 'display:block');
-            saveScore();
         };
     }, 1000);
 };
@@ -193,4 +251,17 @@ ans4El.addEventListener('click', function(){
     qIndex++;
     setQIndex(qIndex);
     displayAnswers();   
+});
+
+//Name Submit Button
+nameSubmit.addEventListener('click', function(){
+    if (typeName.value !== ""){
+        saveScore();
+        popScores();
+        typeName.setAttribute("style", "display: none");
+        nameSubmit.setAttribute("style", "display: none");
+        nameHead.setAttribute('style', 'display: none')
+    }else{
+        alert("You don't look like an O'brien, enter your name!")
+    }
 });
